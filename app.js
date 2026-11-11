@@ -8,8 +8,8 @@ function termekJSONMeghivas() {
         try {
             const termek = JSON.parse(http.responseText);
             termekMegjelenitese(termek);
-        } catch {
-            hibaMegjelenitese("Formátum hibás");
+        } catch (err) {
+            hibaMegjelenitese(`Hiba: ${err}`);
         }
     };
     http.open("GET", "termek.json");
@@ -19,7 +19,6 @@ function termekJSONMeghivas() {
 function termekMegjelenitese(termek) {
     document.getElementById("termek-neve").innerHTML = termek.name;
     document.getElementById("termek-leirasa").innerHTML = termek.description;
-    document.getElementById("hosszu-leiras").innerHTML = termek.description;
     document.getElementById("termek-ara").innerHTML = `${termek.price} ${termek.currency}`;
     document.getElementById("ertekeles").innerHTML =  `${termek.rating} (${termek.reviews.length} értékelés)`;
     document.getElementById("keszlet-szoveg").innerHTML = `Raktáron (${termek.stock} db)`;
@@ -47,8 +46,21 @@ function termekMegjelenitese(termek) {
     const velemenyLista = document.getElementById("velemeny-lista");
     termek.reviews.forEach(function (velemeny) {
         const elem = document.createElement("li");
-        elem.innerHTML = `${velemeny.user}: ${velemeny.comment}`;
-        elem.className = "list-group-item"
+        const jel = document.createElement("span");
+        const tartalom = document.createElement("div");
+        const nev = document.createElement("strong");
+        const szoveg = document.createElement("p");
+        elem.className = "velemeny-elem list-unstyled";
+        jel.className = "velemeny-jel";
+        jel.innerHTML = velemeny.user.charAt(0);
+        nev.className = "velemeny-nev";
+        nev.innerHTML = velemeny.user;
+        szoveg.className = "velemeny-szoveg";
+        szoveg.innerHTML = velemeny.comment;
+        tartalom.appendChild(nev);
+        tartalom.appendChild(szoveg);
+        elem.appendChild(jel);
+        elem.appendChild(tartalom);
         velemenyLista.appendChild(elem);
     });
 }
