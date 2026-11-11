@@ -1,4 +1,4 @@
-function termekBekeres() {
+function termekJSONMeghivas() {
     const http = new XMLHttpRequest();
     http.onload = function () {
         if (http.status !== 200) {
@@ -27,6 +27,15 @@ function termekMegjelenitese(termek) {
     document.getElementById("orszag").innerHTML = termek.manufacturer.country
     document.getElementById("termek-kepe").src = termek.image;
 
+    const indexkepek = document.getElementById("indexkepek");
+    for (let index = 0; index < 4; index++) {
+        const indexkep = document.createElement("img");
+        indexkep.className = "indexkep";
+        indexkep.src = termek.image;
+        indexkep.alt = "";
+        indexkepek.appendChild(indexkep);
+    }
+
     const tulajdonsagLista = document.getElementById("tulajdonsag-lista");
     termek.features.forEach(function (tulajdonsag) {
         const elem = document.createElement("li");
@@ -49,4 +58,4 @@ function hibaMegjelenitese(uzenet) {
     document.getElementById("betoltesi-hiba").hidden = false;
 }
 
-document.addEventListener("DOMContentLoaded", termekBekeres);
+document.addEventListener("DOMContentLoaded", termekJSONMeghivas);
